@@ -12,9 +12,6 @@ class Model(object):
 
 
 class Movie(Model):
-    """
-    存储电影信息
-    """
     def __init__(self):
         self.name = ''
         self.score = 0
@@ -24,9 +21,6 @@ class Movie(Model):
 
 
 def cached_url(url):
-    """
-    缓存, 避免重复下载网页浪费时间
-    """
     folder = 'cached'
     filename = url.split('=', 1)[-1] + '.html'
     'cached/0.html'
@@ -52,9 +46,6 @@ Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0
 
 
 def movie_from_div(div):
-    """
-    从一个 div 里面获取到一个电影信息
-    """
     e = pq(div)
 
     m = Movie()
@@ -70,11 +61,9 @@ def movie_from_div(div):
 def movies_from_url(url):
     page = cached_url(url)
     e = pq(page)
-    # print(page.decode())
-    # 2.父节点
+
     items = e('.item')
-    # 调用 movie_from_div
-    # list comprehension
+
     movies = [movie_from_div(i) for i in items]
     return movies
 
@@ -94,7 +83,7 @@ def download_image(url):
         'user-agent': '''Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36
     Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8''',
     }
-    # 发送网络请求, 把结果写入到文件夹中
+
     r = requests.get(url, headers)
     with open(path, 'wb') as f:
         f.write(r.content)
